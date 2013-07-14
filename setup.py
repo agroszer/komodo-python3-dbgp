@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import sys
@@ -35,7 +35,8 @@ class Dbgp_build_ext(build_ext):
                 tgt = os.path.join(targetpath, fn)
                 shutil.copyfile(src, tgt)
 
-            print NAME, "prebuilt binaries were copied"
+            print(NAME)
+            print("prebuilt binaries were copied")
 
 
 setup(
