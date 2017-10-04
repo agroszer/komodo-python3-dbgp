@@ -76,7 +76,7 @@ import logging
 is_v2 = sys.version_info[0] == 2
 if is_v2:
     pythonlib = "pythonlib"
-    UnicodeType = str
+    UnicodeType = types.UnicodeType
 else:
     pythonlib = "python3lib"
     UnicodeType = str
