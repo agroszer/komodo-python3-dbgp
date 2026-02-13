@@ -4,9 +4,8 @@ import os
 import sys
 import shutil
 
-from setuptools import setup
-from distutils.core import Extension
-from distutils.command.build_ext import build_ext
+from setuptools import setup, Extension
+from setuptools.command.build_ext import build_ext
 
 NAME = 'komodo-python3-dbgp'
 
@@ -57,6 +56,12 @@ setup(
         "Programming Language :: Python :: 3.1",
         "Programming Language :: Python :: 3.2",
         "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: Implementation :: CPython",
     ],
 

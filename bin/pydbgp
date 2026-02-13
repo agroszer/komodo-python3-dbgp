@@ -211,7 +211,7 @@ def main(argv):
             return 0
         elif opt in ('-V', '--version'):
             import re
-            kw = re.findall('\$(\w+):\s(.*?)\s\$', __revision__)
+            kw = re.findall(r'\$(\w+):\s(.*?)\s\$', __revision__)
             sys.stderr.write("pydbgp Version %s %s %s %s %s\n"\
                              % ('.'.join([str(i) for i in __version__]),
                                 kw[0][0], kw[0][1], kw[1][0], kw[1][1]))
