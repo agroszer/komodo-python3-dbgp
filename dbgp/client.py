@@ -65,13 +65,27 @@ else:
     modname = "_client%s%s" % (major, minor)
     try:
         # Try importing our fast C module.
-        import imp
         import dbgp
-        info = imp.find_module(modname, dbgp.__path__)
-        _client = imp.load_module(modname, *info)
-        sys.modules["_client"] = _client
-        from _client import *
-        del sys.modules["_client"], info, _client
+        _client = None
+        if sys.version_info >= (3, 5):
+            import importlib.util
+            import importlib.machinery
+            spec = importlib.machinery.PathFinder.find_spec(modname, dbgp.__path__)
+            if spec:
+                _client = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(_client)
+        else:
+            import imp
+            info = imp.find_module(modname, dbgp.__path__)
+            _client = imp.load_module(modname, *info)
+
+        if _client:
+            sys.modules["_client"] = _client
+            from _client import *
+            del sys.modules["_client"], _client
+            if 'info' in locals(): del info
+        else:
+            raise ImportError("No module named %s" % modname)
     except ImportError as ex:
         #configureLogging(log, logging.INFO)
         #log.exception(ex)
@@ -521,7 +535,12 @@ except ImportError:
         def modules_dict(self): return sys.modules
         pass
 
-import imp
+try:
+    import types
+    _new_module = types.ModuleType
+except ImportError:
+    import imp
+    _new_module = imp.new_module
 
 class h_main:
     """
@@ -532,7 +551,7 @@ class h_main:
     def __init__(self, main_name='__main__'):
         import __main__
         self.name = main_name
-        self.module = imp.new_module(main_name)
+        self.module = _new_module(main_name)
         if hasattr(__main__, '__builtins__'): # not Jython
             self.module.__builtins__ = __main__.__builtins__
         self.locals = self.globals = self.module.__dict__
